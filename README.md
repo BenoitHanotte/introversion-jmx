@@ -46,6 +46,14 @@ your choice and connect to
 service:jmx:rmi:///jndi/rmi://${THE_HOST}:7460/jmxrmi
 ```
 
+## Build
+
+Use maven to build the jar:
+
+```
+mvn clean package
+```
+
 ## Security
 
 There is currently no security enforced for the agent. For this reason, you should not 
