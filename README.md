@@ -1,7 +1,7 @@
-# Introversion-jmx
+# Introversion jmx agent
 
-Introversion-jmx is a simple java agent that allows to attache and start a 
-JMX server to an hotpot JVM using a random port between 1001 and 9999.
+Introversion-jmx is a simple __java agent__ that allows to attache and start a 
+JMX server to a JVM using a random port between 1001 and 9999.
 
 This simple agent was developed in order to profile distributed applications 
 where multiple JVMs may be started on a given node, in which case it is 
