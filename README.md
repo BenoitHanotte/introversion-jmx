@@ -15,7 +15,7 @@ Add the java agent to you application using the `--javaagent` parameter
 as in the `HelloWorld sample application:
 
 ```
-java -javaagent:introversion-jmx-1.0-SNAPSHOT.jar ...
+java -javaagent:./introversion-jmx-1.0-SNAPSHOT.jar ...
 ````
 
 ### Using with a Spark application
@@ -24,7 +24,7 @@ Ship the package jar to the working directory of the Spark executors
 using the `files` configuration as below:
 
 ```
-files="introversion-jmx-1.0-SNAPSHOT.jar"
+files="./introversion-jmx-1.0-SNAPSHOT.jar"
 ```
 
 and add the `--javaagent` parameter to the executor or driver JMV options
