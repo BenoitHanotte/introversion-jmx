@@ -31,7 +31,7 @@ and add the `--javaagent` parameter to the executor or driver JMV options
 using the `spark.executor.extraJavaOptions` as following:
 
 ```
-spark.executor.extraJavaOptions="-javaagent:introversion-jmx-1.0-SNAPSHOT.jar"
+spark.executor.extraJavaOptions="-javaagent:./introversion-jmx-1.0-SNAPSHOT.jar"
 ```
 
 ### Connecting to the agent
