@@ -53,17 +53,34 @@ public class Agent {
         HashMap<String, Object> env = getEnv(port);
 
         // hostname is only used as an indication to provide an url ready to be pasted in visualvm, but it may be wrong
-        String address =  getAddress();
+        String address = getAddress();
 
         // start the JMX server
         try {
             String jmxUrl = "service:jmx:rmi:///jndi/rmi://:" + port + "/jmxrmi";
-            startJMXServer(jmxUrl, env);
+            System.out.println("Creating JMX server");
+            final JMXConnectorServer jmxServer = createJMXServer(jmxUrl, env);
+            System.out.println("Starting JMX server");
+            jmxServer.start();
             String remoteUrl = address != null ? makeJmxUrl(address, port) : jmxUrl;
             System.out.println("Started JMX server at address \"" + remoteUrl + "\"");
+
+            // register hook to shutdozn the server qt the end of the application
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+                public void run() {
+                    try {
+                        jmxServer.stop();
+                        System.out.println("Stopped JMX server");
+                    } catch (IOException e) {
+                        System.err.println("Failed to stop JMX server");
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
         catch (Exception e) {
             System.err.println("Failed to start JMX server at port " + port);
+            e.printStackTrace();
         }
     }
 
@@ -85,19 +102,15 @@ public class Agent {
         return "service:jmx:rmi:///jndi/rmi://" + hostname + ":" + port + "/jmxrmi";
     }
 
-    private static void startJMXServer(String jmxUrl, HashMap<String, Object> env) throws Exception {
+    private static JMXConnectorServer createJMXServer(String jmxUrl, HashMap<String, Object> env) throws Exception {
         try {
             JMXServiceURL url = new JMXServiceURL(jmxUrl);
-            JMXConnectorServer cs = JMXConnectorServerFactory.newJMXConnectorServer(url, env, mbs);
-            cs.start();
+            return JMXConnectorServerFactory.newJMXConnectorServer(url, env, mbs);
         }
         catch (MalformedURLException e) {
             System.err.println("Incorrect URL for the JMX service: " + jmxUrl);
             e.printStackTrace();
-        }
-        catch (IOException e) {
-            System.err.println("Could not create or start JMXConnectorServer");
-            e.printStackTrace();
+            throw new IllegalArgumentException("Incorrect JMX url: " + jmxUrl);
         }
     }
 
