@@ -65,7 +65,7 @@ public class Agent {
             String remoteUrl = address != null ? makeJmxUrl(address, port) : jmxUrl;
             System.out.println("Started JMX server at address \"" + remoteUrl + "\"");
 
-            // register hook to shutdozn the server qt the end of the application
+            // register hook to shutdown the server at the end of the application
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 public void run() {
                     try {
